@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="width_barcode">300dp</dimen>
-    <dimen name="height_barcode">65dp</dimen>
+    <dimen name="width_qrcode">200dp</dimen>
+    <dimen name="height_qrcode">200dp</dimen>
 </resources>
