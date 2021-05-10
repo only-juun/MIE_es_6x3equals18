@@ -1,5 +1,3 @@
-//출처: https://www.brightec.co.uk/blog/howto-creating-barcode-kotlin-android
-
 package com.example.barcode_generator
 
 import android.graphics.Bitmap
@@ -113,3 +111,5 @@ class MainActivity : AppCompatActivity() {
         return bitmap
     }
 }
+
+//출처: https://www.brightec.co.uk/blog/howto-creating-barcode-kotlin-android
