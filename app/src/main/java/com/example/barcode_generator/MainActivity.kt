@@ -13,10 +13,10 @@ import com.google.zxing.qrcode.QRCodeWriter
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 import android.os.CountDownTimer
+import android.widget.TextView
 import androidx.core.view.isVisible
 
 val random = Random()
-val num = random.nextInt(5)
 fun rand(from: Int, to: Int) : Int {
     return random.nextInt(to - from) + from
 }
@@ -26,12 +26,13 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        displayBitmap((259187350891743451 / rand(1, 10) * rand(1, 10)).toString())
+        //displayBitmap((259187350891743451 / rand(1, 10) * rand(1, 10)).toString())
+        displayBitmap(("NamHwanJoon 9703231641715 " + (25918735089174345 / rand(1, 1000) * rand(1, 1000)).toString()))
         timer.start()
     }
 
     fun barcodeRefresh(view: View) {
-        displayBitmap((259187350891743451 / rand(1, 10) * rand(1, 10)).toString())
+        displayBitmap(("NamHwanJoon 9703231641715 " + (25918735089174345 / rand(1, 1000) * rand(1, 1000)).toString()))
         RefreshButton.isVisible = false
         RefreshButton.isEnabled = false
         image_barcode.isVisible = true
