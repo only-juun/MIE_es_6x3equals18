@@ -1,38 +1,33 @@
-//출처: https://www.brightec.co.uk/blog/howto-creating-barcode-kotlin-android
-
 package com.example.barcode_generator
 
 import android.graphics.Bitmap
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.view.View
 import androidx.annotation.ColorInt
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.isVisible
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.qrcode.QRCodeWriter
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_generate_qr.*
 import java.util.*
-import android.os.CountDownTimer
-import android.widget.TextView
-import androidx.core.view.isVisible
 
-val random = Random()
-fun rand(from: Int, to: Int) : Int {
-    return random.nextInt(to - from) + from
-}
-
-class MainActivity : AppCompatActivity() {
+class GenerateQR : AppCompatActivity() {
+    val random = Random()
+    fun rand(from: Int, to: Int) : Int {
+        return random.nextInt(to - from) + from
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        //displayBitmap((259187350891743451 / rand(1, 10) * rand(1, 10)).toString())
-        displayBitmap(("NamHwanJoon 9703231641715 " + (25918735089174345 / rand(1, 1000) * rand(1, 1000)).toString()))
+        setContentView(R.layout.activity_generate_qr)
+        displayBitmap((259187350891743451 / rand(1, 10) * rand(1, 10)).toString())
         timer.start()
     }
 
     fun barcodeRefresh(view: View) {
-        displayBitmap(("NamHwanJoon 9703231641715 " + (25918735089174345 / rand(1, 1000) * rand(1, 1000)).toString()))
+        displayBitmap((259187350891743451 / rand(1, 10) * rand(1, 10)).toString())
         RefreshButton.isVisible = false
         RefreshButton.isEnabled = false
         image_barcode.isVisible = true
