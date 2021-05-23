@@ -53,14 +53,14 @@ class GenerateQR : AppCompatActivity() {
             text_barcode_number.isVisible = false
             RefreshButton.isVisible = true
             RefreshButton.isEnabled = true
-            db.document("user").update("valid", false)
+            db.document("QRcode").update("valid", false)
         }
     }
 
     private fun displayBitmap(value: String) {
         val widthPixels = resources.getDimensionPixelSize(R.dimen.width_qrcode)
         val heightPixels = resources.getDimensionPixelSize(R.dimen.height_qrcode)
-        db.document("user").set(hashMapOf("valid" to true, "code" to value))
+        db.document("QRcode").set(hashMapOf("valid" to true, "code" to value))
         image_barcode.setImageBitmap(
             createBarcodeBitmap(
                 barcodeValue = value,
