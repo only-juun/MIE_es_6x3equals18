@@ -2,28 +2,33 @@ package com.example.barcode_generator
 
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.view.View
 import androidx.annotation.ColorInt
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.isVisible
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.qrcode.QRCodeWriter
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_generate_qr.*
 import java.util.*
-import android.os.CountDownTimer
-import androidx.core.view.isVisible
 
-val random = Random()
-val num = random.nextInt(5)
-fun rand(from: Int, to: Int) : Int {
-    return random.nextInt(to - from) + from
-}
 
-class MainActivity : AppCompatActivity() {
+class GenerateQR : AppCompatActivity() {
+    private val mFirebaseAuth = FirebaseAuth.getInstance()
+    val firebaseUser = mFirebaseAuth.uid
+    val db = FirebaseFirestore.getInstance().collection(firebaseUser.toString())
+    val random = Random()
+    fun rand(from: Int, to: Int) : Int {
+        return random.nextInt(to - from) + from
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_generate_qr)
         displayBitmap((259187350891743451 / rand(1, 10) * rand(1, 10)).toString())
         timer.start()
     }
@@ -48,13 +53,14 @@ class MainActivity : AppCompatActivity() {
             text_barcode_number.isVisible = false
             RefreshButton.isVisible = true
             RefreshButton.isEnabled = true
+            db.document("user").update("valid", false)
         }
     }
 
     private fun displayBitmap(value: String) {
         val widthPixels = resources.getDimensionPixelSize(R.dimen.width_qrcode)
         val heightPixels = resources.getDimensionPixelSize(R.dimen.height_qrcode)
-
+        db.document("user").set(hashMapOf("valid" to true, "code" to value))
         image_barcode.setImageBitmap(
             createBarcodeBitmap(
                 barcodeValue = value,
@@ -111,5 +117,3 @@ class MainActivity : AppCompatActivity() {
         return bitmap
     }
 }
-
-//출처: https://www.brightec.co.uk/blog/howto-creating-barcode-kotlin-android
