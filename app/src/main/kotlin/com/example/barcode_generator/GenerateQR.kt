@@ -33,6 +33,11 @@ class GenerateQR : AppCompatActivity() {
         timer.start()
     }
 
+    override fun onBackPressed() {
+        db.document("QRcode").update("valid", false)
+        super.onBackPressed()
+    }
+
     fun barcodeRefresh(view: View) {
         displayBitmap((259187350891743451 / rand(1, 10) * rand(1, 10)).toString())
         RefreshButton.isVisible = false
