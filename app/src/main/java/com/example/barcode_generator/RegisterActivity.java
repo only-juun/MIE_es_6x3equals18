@@ -17,13 +17,14 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.jetbrains.annotations.NotNull;
 
 public class RegisterActivity extends AppCompatActivity {
 
     private FirebaseAuth mFirebaseAuth;
-    private DatabaseReference mDatabaseRef;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();     // cloud firestore
     private EditText mEtEmail, mEtPwd, mEtAge, mEtName;
     private Button mBtnRegister;
 
@@ -33,7 +34,6 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         mFirebaseAuth = FirebaseAuth.getInstance();
-        mDatabaseRef = FirebaseDatabase.getInstance().getReference("BigBox");
 
         mEtEmail = findViewById(R.id.et_email);
         mEtPwd = findViewById(R.id.et_password);
@@ -47,6 +47,7 @@ public class RegisterActivity extends AppCompatActivity {
                 String strEmail = mEtEmail.getText().toString();
                 String strPwd = mEtPwd.getText().toString();
                 Long longAge = Long.parseLong(mEtAge.getText().toString());
+                String name = mEtName.getText().toString();
 
                 mFirebaseAuth.createUserWithEmailAndPassword(strEmail,strPwd).addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -58,8 +59,9 @@ public class RegisterActivity extends AppCompatActivity {
                             account.setEmailId(firebaseUser.getEmail());
                             account.setPassword(strPwd);
                             account.setAge(longAge);
+                            account.setName(name);
 
-                            mDatabaseRef.child("UserAccount").child(firebaseUser.getUid()).setValue(account);
+                            db.collection(firebaseUser.getUid()).document("UserAccount").set(account);
 
                             Toast.makeText(RegisterActivity.this, "회원가입이 완료되었습니다.", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);

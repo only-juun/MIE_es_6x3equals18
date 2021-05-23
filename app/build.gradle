@@ -57,5 +57,10 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:17.2.3'
     implementation 'com.google.firebase:firebase-database:20.0.0'
     implementation 'androidx.core:core-ktx:1.3.2'
+
+    implementation "androidx.multidex:multidex:2.0.1"       //multi dex
+    implementation platform('com.google.firebase:firebase-bom:27.1.0')
+    implementation 'com.google.firebase:firebase-firestore' //cloud firebase
+    implementation 'com.google.firebase:firebase-firestore-ktx' //cloud firebase
 }
 

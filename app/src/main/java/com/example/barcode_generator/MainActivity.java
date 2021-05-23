@@ -11,7 +11,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,7 +25,6 @@ import org.jetbrains.annotations.NotNull;
 public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth mFirebaseAuth;         //파이어베이스 인증
-    private DatabaseReference mDatabaseRef;     //실시간 데이터베이스
     private EditText mEtEmail, mEtPwd;          //로그인 입력필드
 
     @Override

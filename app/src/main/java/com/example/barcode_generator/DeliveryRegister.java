@@ -3,21 +3,36 @@ package com.example.barcode_generator;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.google.common.collect.HashBiMap;
+import com.google.common.collect.HashMultimap;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentId;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class DeliveryRegister extends AppCompatActivity {
 
     private FirebaseAuth mFirebaseAuth;
-    private DatabaseReference mDatabaseRef;
     private EditText mEtInvoice, mEtContents;
     private Button mBtnDregister;
+    private CollectionReference db;    // cloud firestore
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,8 +40,6 @@ public class DeliveryRegister extends AppCompatActivity {
         setContentView(R.layout.activity_delivery_register);
 
         mFirebaseAuth = FirebaseAuth.getInstance();
-        mDatabaseRef = FirebaseDatabase.getInstance().getReference("BigBox");
-
         mEtInvoice = findViewById(R.id.et_invoice);
         mEtContents = findViewById(R.id.et_contents);
         mBtnDregister = findViewById(R.id.btn_Dregister);
@@ -49,7 +62,15 @@ public class DeliveryRegister extends AppCompatActivity {
     public void addDelivery(String Invoice, String Contents){
         DeliveryContents dc = new DeliveryContents(Invoice, Contents);
         FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
-        mDatabaseRef.child("UserAccount").child(firebaseUser.getUid())
-                .child("DeliveryContents").child(Invoice).setValue(dc);
+//        DocumentReference blank = db.whereEqualTo("valid","false").get().getResult().getDocuments().get(1).getReference();
+        //blank.set(Map.of("code",Invoice,"info",Contents));
+
+        LocalDateTime current = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmm");
+        String formatted_time = current.format(formatter);
+        db = FirebaseFirestore.getInstance().collection(firebaseUser.getUid());
+        db.add(Map.of("code",Invoice,"info",Contents));
+        db.document("Log").set((Map.of(Invoice , Map.of("Code",Invoice, "Date", formatted_time,"Event","택배 등록","Info", Contents))), SetOptions.merge());
+        //db.whereEqualTo().get().
     }
 }
