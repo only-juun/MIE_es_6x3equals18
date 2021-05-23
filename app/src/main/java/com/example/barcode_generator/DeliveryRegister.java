@@ -69,7 +69,7 @@ public class DeliveryRegister extends AppCompatActivity {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmm");
         String formatted_time = current.format(formatter);
         db = FirebaseFirestore.getInstance().collection(firebaseUser.getUid());
-        db.add(Map.of("code",Invoice,"info",Contents));
+        db.add(Map.of("Invoice",Invoice,"Info",Contents));
         db.document("Log").set((Map.of(Invoice , Map.of("Code",Invoice, "Date", formatted_time,"Event","택배 등록","Info", Contents))), SetOptions.merge());
         //db.whereEqualTo().get().
     }

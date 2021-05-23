@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
         Button btn_Dreister = findViewById(R.id.btn_Dregister);
         Button btn_qr = findViewById(R.id.btn_qr);
         Button btn_log = findViewById(R.id.btn_log);
+        Button btn_delete = findViewById(R.id.btn_delete);
 
         btn_qr.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,6 +57,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, LogCheck.class);
+                startActivity(intent);
+            }
+        });
+        btn_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, UserDelete.class);
                 startActivity(intent);
             }
         });
