@@ -6,7 +6,26 @@ from firebase_admin import firestore
 import RPi.GPIO as GPIO
 import time
 
+class Log_data (object):
+    def __init__(self, Boxname, code, date, DocRef):
+      self.Coll_ref = Boxname
+      self.Doc_ref = DocRef
+      self.Code = code
+      self.Date = date
 
+    def LogUpload(self, msg):
+      delivery_info = self.Doc_ref.get(u'info')
+      self.Coll_ref.document(u'Log').update( {f'{self.Date}': {
+      u'Code': f'{self.Code}',
+      u'Date': f'{self.Date}',
+      u'Event': f'{msg}',
+      u'Info': f'{delivery_info}' } } )
+
+    def delete(self):
+      self.Doc_ref.delete()
+      
+
+    
 def lock_open(pin):
     print("open")
     GPIO.output(pin, True)
@@ -20,10 +39,10 @@ GPIO.cleanup(lock_pin)
 GPIO.setmode(GPIO.BOARD)
 GPIO.setup(lock_pin, GPIO.OUT)
 
-cred = credentials.Certificate("./barcodedb-efafb-firebase-adminsdk-wujo4-01ed441f25.json")
+cred = credentials.Certificate("./big-box-2e5bb-firebase-adminsdk-opmnp-944d0558e3.json")
 firebase_admin.initialize_app(cred)
 db = firestore.client()
-barcode_ref = db.collection(u'bigbox')
+barcode_ref = db.collection(u'jTozyyclMEU7ja7kn5vS2O1v0xD2')
 
 
 
@@ -38,12 +57,12 @@ for doc in docs:
 
 while(1):
   scan_result = input("Barcode scaner module: ")
-  # ¹ÙÄÚµå ½ºÄµ Á¤º¸°¡ DB¿¡ ÀÖ´ÂÁö È®ÀÎÇØ¼­ ÀÖ´ÂÁö ¾ø´ÂÁö ¾Ë°ÔµÊ
-  # À¯È¿ ¹ÙÄÚµå(»ç¿ëÀÚ, ¿î¼ÛÀå)ÀÏ °æ¿ì door_open = True
-  # À¯È¿¹ÙÄÚµå°¡ ¾Æ´Ñ °æ¿ì, invalid_access++ 
+  # ë°”ì½”ë“œ ìŠ¤ìº” ì •ë³´ê°€ DBì— ìˆëŠ”ì§€ í™•ì¸í•´ì„œ ìˆëŠ”ì§€ ì—†ëŠ”ì§€ ì•Œê²Œë¨
+  # ìœ íš¨ ë°”ì½”ë“œ(ì‚¬ìš©ì, ìš´ì†¡ì¥)ì¼ ê²½ìš° door_open = True
+  # ìœ íš¨ë°”ì½”ë“œê°€ ì•„ë‹Œ ê²½ìš°, invalid_access++
   query_ref = barcode_ref.where(u'code' , u'==',scan_result).get()      # Type: List
-  # print(query_ref.id) »ç¿ë ºÒ°¡
-  if len(query_ref)==0:        # ¹ÙÄÚµå°¡ ÀúÀåµÇ¾îÀÖÁö ¾ÊÀº °æ¿ì
+  # print(query_ref.id) ì‚¬ìš© ë¶ˆê°€
+  if len(query_ref)==0:        # ë°”ì½”ë“œê°€ ì €ì¥ë˜ì–´ìˆì§€ ì•Šì€ ê²½ìš°
     door_open = False
     print("invalid barcode")
     invalid_access = invalid_access+1
@@ -53,29 +72,29 @@ while(1):
     door_open = True
     
     lock_open(lock_pin)
-    time.sleep(5)
+    time.sleep(1) # sleep(5)
     
-    # ·Î±×(open) Ãß°¡ ÄÚµå ¾²±â
+    # ë¡œê·¸(open) ì¶”ê°€ ì½”ë“œ ì“°ê¸°
+    now = time.localtime()
+    current_time = '%04d%02d%02d%02d%02d' % (now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour, now.tm_min)
     
+    log = Log_data(Boxname=barcode_ref, code=scan_result, date=current_time, DocRef=doc)
+    log.LogUpload('íƒë°°ê°€ ë„ì°©í•˜ì˜€ìœ¼ë©° í•¨ì´ ì—´ë¦½ë‹ˆë‹¤.')  # íƒë°° ë„ì°©ì— ëŒ€í•œ ë¡œê·¸ ì¶”ê°€
+
     lock_close(lock_pin)
     time.sleep(3)
     
-    # ·Î±×(close) Ãß°¡ ÄÚµå ¾²±â
+    # ë¡œê·¸(close) ì¶”ê°€ ì½”ë“œ ì“°ê¸°
     
-    door_open = False 
+    door_open = False
+    log.LogUpload('íƒë°° í•¨ì´ ë‹«í™ë‹ˆë‹¤.')  # íƒë°° ë„ì°©ì— ëŒ€í•œ ë¡œê·¸ ì¶”ê°€
+    log.delete()  # document ì‚­ì œ
     
   if invalid_access > 2:
     print("Send info to App")
-    # ¾îÇÃ¸®ÄÉÀÌ¼ÇÀ¸·Î ¾Ë¸² Àü¼Û ÄÚµå ÀÛ¼º
-    invalid_access = 0         # ÃÊ±âÈ­  
-      
+    # ì–´í”Œë¦¬ì¼€ì´ì…˜ìœ¼ë¡œ ì•Œë¦¼ ì „ì†¡ ì½”ë“œ ì‘ì„±
+    barcode_ref.document(u'Log').update( {f'{current_time}': {
+      u'Event': u'ì˜ëª»ëœ ë°”ì½”ë“œê°€ ì¸ì‹ë˜ì—ˆìŠµë‹ˆë‹¤.' } } )
+
+    invalid_access = 0         # ì´ˆê¸°í™”
     
-     
-    
-# µ¥ÀÌÅÍ Ãß°¡: ÀÌ¿ë 
-#doc_ref = db.collection(u'users').document(u'alovelace')
-#doc_ref.set({
-#    u'first': u'Ada',
-#    u'last': u'Lovelace',
-#    u'born': 1815
-#})
