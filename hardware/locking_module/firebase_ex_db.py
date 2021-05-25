@@ -39,10 +39,10 @@ GPIO.cleanup(lock_pin)
 GPIO.setmode(GPIO.BOARD)
 GPIO.setup(lock_pin, GPIO.OUT)
 
-cred = credentials.Certificate("./big-box-2e5bb-firebase-adminsdk-opmnp-944d0558e3.json")
+cred = credentials.Certificate("./barcodedb-efafb-firebase-adminsdk-wujo4-01ed441f25.json")
 firebase_admin.initialize_app(cred)
 db = firestore.client()
-barcode_ref = db.collection(u'jTozyyclMEU7ja7kn5vS2O1v0xD2')
+barcode_ref = db.collection(u'bigbox')
 
 
 
