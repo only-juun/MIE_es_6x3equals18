@@ -18,8 +18,11 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Map;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -61,7 +64,8 @@ public class RegisterActivity extends AppCompatActivity {
                             account.setAge(longAge);
                             account.setName(name);
 
-                            db.collection(firebaseUser.getUid()).document("UserAccount").set(account);
+                            db.collection(name).document("UserAccount").set(account);
+                            db.collection("UserList").document(name).set(Map.of("Uid", firebaseUser.getUid()), SetOptions.merge());
 
                             Toast.makeText(RegisterActivity.this, "회원가입이 완료되었습니다.", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);

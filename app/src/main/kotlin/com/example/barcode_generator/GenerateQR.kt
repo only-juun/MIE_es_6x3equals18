@@ -9,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.qrcode.QRCodeWriter
@@ -18,28 +17,30 @@ import java.util.*
 
 
 class GenerateQR : AppCompatActivity() {
-    private val mFirebaseAuth = FirebaseAuth.getInstance()
-    val firebaseUser = mFirebaseAuth.uid
-    val db = FirebaseFirestore.getInstance().collection(firebaseUser.toString())
+    private var mFirebaseAuth = FirebaseAuth.getInstance()
+    val firebaseUser = mFirebaseAuth.uid.toString()
+    val db = FirebaseFirestore.getInstance()
     val random = Random()
-    fun rand(from: Int, to: Int) : Int {
+    fun rand(from: Int, to: Int): Int {
         return random.nextInt(to - from) + from
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_generate_qr)
-        displayBitmap((259187350891743451 / rand(1, 10) * rand(1, 10)).toString())
+        displayBitmap(firebaseUser.toString() +(System.currentTimeMillis()*rand(1,100)/rand(1,100)).toString())
         timer.start()
     }
 
     override fun onBackPressed() {
-        db.document("QRcode").update("valid", false)
         super.onBackPressed()
+        val receiveIntent = intent
+        val coll_name = receiveIntent.getStringExtra("boxname")
+        db.collection(coll_name.toString()).document("QRcode").update("valid", false)
     }
 
     fun barcodeRefresh(view: View) {
-        displayBitmap((259187350891743451 / rand(1, 10) * rand(1, 10)).toString())
+        displayBitmap(firebaseUser.toString() +(System.currentTimeMillis()*rand(1,100)/rand(1,100)).toString())
         RefreshButton.isVisible = false
         RefreshButton.isEnabled = false
         image_barcode.isVisible = true
@@ -49,23 +50,30 @@ class GenerateQR : AppCompatActivity() {
 
     private val timer = object : CountDownTimer(15500, 1000) {
         override fun onTick(millisUntilFinished: Long) {
-            text_refresh_timer.text = ((millisUntilFinished/1000).toString() +  '초')
+            text_refresh_timer.text = ((millisUntilFinished / 1000).toString() + '초')
         }
 
         override fun onFinish() {
+            val receiveIntent = intent
+            val coll_name = receiveIntent.getStringExtra("boxname")
+
             text_refresh_timer.text = "QR코드 재생성"
             image_barcode.isVisible = false
             text_barcode_number.isVisible = false
             RefreshButton.isVisible = true
             RefreshButton.isEnabled = true
-            db.document("QRcode").update("valid", false)
+            db.collection(coll_name.toString()).document("QRcode").update("valid", false)
         }
     }
 
     private fun displayBitmap(value: String) {
         val widthPixels = resources.getDimensionPixelSize(R.dimen.width_qrcode)
         val heightPixels = resources.getDimensionPixelSize(R.dimen.height_qrcode)
-        db.document("QRcode").set(hashMapOf("valid" to true, "code" to value))
+
+        val receiveIntent = intent
+        val coll_name = receiveIntent.getStringExtra("boxname")
+
+        db.collection(coll_name.toString()).document("QRcode").set(hashMapOf("valid" to true, "code" to value))
         image_barcode.setImageBitmap(
             createBarcodeBitmap(
                 barcodeValue = value,
