@@ -9,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.qrcode.QRCodeWriter
@@ -29,7 +28,7 @@ class GenerateQR : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_generate_qr)
-        displayBitmap((259187350891743451 / rand(1, 10) * rand(1, 10)).toString())
+        displayBitmap(firebaseUser.toString()+(System.currentTimeMillis()*rand(1,100)/rand(1,100)).toString())
         timer.start()
     }
 
@@ -39,7 +38,7 @@ class GenerateQR : AppCompatActivity() {
     }
 
     fun barcodeRefresh(view: View) {
-        displayBitmap((259187350891743451 / rand(1, 10) * rand(1, 10)).toString())
+        displayBitmap(firebaseUser.toString()+(System.currentTimeMillis()*rand(1,100)/rand(1,100)).toString())
         RefreshButton.isVisible = false
         RefreshButton.isEnabled = false
         image_barcode.isVisible = true
