@@ -32,6 +32,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Intent receiveIntent = getIntent();
+        String coll_name = receiveIntent.getStringExtra("boxname");
+        Log.d("coll name", coll_name);
+
         Button btn_Dreister = findViewById(R.id.btn_Dregister);
         Button btn_qr = findViewById(R.id.btn_qr);
         Button btn_log = findViewById(R.id.btn_log);
@@ -41,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, GenerateQR.class);
+                intent.putExtra("boxname", coll_name);
                 startActivity(intent);
             }
         });
@@ -49,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, DeliveryRegister.class);
+                intent.putExtra("boxname", coll_name);
                 startActivity(intent);
             }
         });
@@ -57,6 +63,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, LogCheck.class);
+                intent.putExtra("boxname", coll_name);
+                startActivity(intent);
+            }
+        });
+        btn_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, UserDelete.class);
+                intent.putExtra("boxname", coll_name);
                 startActivity(intent);
             }
         });
