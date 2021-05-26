@@ -21,12 +21,15 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.jetbrains.annotations.NotNull;
-
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class LoginActivity extends AppCompatActivity {
 
     private FirebaseAuth mFirebaseAuth;         //파이어베이스 인증
     private EditText mEtEmail, mEtPwd;          //로그인 입력필드
+    String db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,9 +53,24 @@ public class LoginActivity extends AppCompatActivity {
                     public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
                         if (task.isSuccessful()){
                             // 로그인 성공
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                            startActivity(intent);//현재 액티비티 파괴
-                            finish();
+                            FirebaseFirestore.getInstance().collection("UserList").whereEqualTo("Uid",mFirebaseAuth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        for (QueryDocumentSnapshot document : task.getResult()) {
+                                            db = document.getId();
+                                        }
+                                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                        intent.putExtra("boxname", db);
+                                        startActivity(intent);//현재 액티비티 파괴
+                                        finish();
+                                    }
+                                    else {
+                                        Log.d("noAccount","db에 없는 계정"); //누락된 경우??
+                                    }
+                                }
+                            });
+                            Log.d("id",mFirebaseAuth.getCurrentUser().getUid());
 
                         }else{
                             Toast.makeText(LoginActivity.this, "로그인이 실패하였습니다.", Toast.LENGTH_SHORT).show();
@@ -72,4 +90,5 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
 }

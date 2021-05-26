@@ -1,5 +1,6 @@
 package com.example.barcode_generator;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +10,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.common.collect.HashBiMap;
 import com.google.common.collect.HashMultimap;
 import com.google.firebase.auth.FirebaseAuth;
@@ -18,7 +21,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentId;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -53,6 +59,10 @@ public class DeliveryRegister extends AppCompatActivity {
                 addDelivery(strInvoice, strContents);
                 Toast.makeText(DeliveryRegister.this, "택배등록이 완료되었습니다.", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(DeliveryRegister.this, MainActivity.class);
+
+                Intent receiveIntent = getIntent();
+                String coll_name = receiveIntent.getStringExtra("boxname");
+                intent.putExtra("boxname", coll_name);
                 startActivity(intent);//현재 액티비티 파괴
                 finish();
             }
@@ -68,9 +78,14 @@ public class DeliveryRegister extends AppCompatActivity {
         LocalDateTime current = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmm");
         String formatted_time = current.format(formatter);
-        db = FirebaseFirestore.getInstance().collection(firebaseUser.getUid());
-        db.add(Map.of("Invoice",Invoice,"Info",Contents));
-        db.document("Log").set((Map.of(Invoice , Map.of("Code",Invoice, "Date", formatted_time,"Event","택배 등록","Info", Contents))), SetOptions.merge());
+
+        Intent receiveIntent = getIntent();
+        String coll_name = receiveIntent.getStringExtra("boxname");
+
+        db = FirebaseFirestore.getInstance().collection(coll_name);
+        db.add(Map.of("code",Invoice,"Info",Contents));
+        db.document("Log").set((Map.of(formatted_time , Map.of("Code",Invoice, "Date", formatted_time,"Event","택배 등록","Info", Contents))), SetOptions.merge());
         //db.whereEqualTo().get().
     }
+
 }

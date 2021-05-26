@@ -17,6 +17,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -34,6 +36,8 @@ public class UserDelete extends AppCompatActivity {
 
         Button btn_delete = findViewById(R.id.btn_delete);
 
+        Intent receiveIntent = getIntent();
+        String coll_name = receiveIntent.getStringExtra("boxname");
 
         btn_delete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,28 +45,28 @@ public class UserDelete extends AppCompatActivity {
                 //회원탈퇴
                 FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
                 mFirebaseAuth.getCurrentUser().delete();
-                db.collection(firebaseUser.getUid()).document("UserAccount").delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                db.collection(coll_name).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
-                    public void onSuccess(Void unused) {
-                        db.collection(firebaseUser.getUid()).document("Log").delete();
-                        db.collection(firebaseUser.getUid()).document("QRcode").delete();
-                    Toast.makeText(UserDelete.this, "회원탈퇴가 완료되었습니다.", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(UserDelete.this, LoginActivity.class);
-                        startActivity(intent);
-                        finish();
-                    }
-                })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull @NotNull Exception e) {
-                                Toast.makeText(UserDelete.this, "회원탈퇴가 실패하였습니다.", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(UserDelete.this, MainActivity.class);
-                                startActivity(intent);
-                                finish();
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                document.getReference().delete();
                             }
-                        });
+                            Toast.makeText(UserDelete.this, "회원탈퇴가 완료되었습니다.", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(UserDelete.this, LoginActivity.class);
+                            startActivity(intent);
+                            finish();
+                        } else {
+                            Toast.makeText(UserDelete.this, "회원탈퇴가 실패하였습니다.", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(UserDelete.this, MainActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                    }
+                });
             }
         });
+
 
         Button btn_no = findViewById(R.id.btn_no);
         btn_no.setOnClickListener(new View.OnClickListener() {
