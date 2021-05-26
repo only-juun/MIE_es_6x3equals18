@@ -130,30 +130,3 @@ class GenerateQR : AppCompatActivity() {
         return bitmap
     }
 }
-//    fun find_box(uid: String): String {
-//        mFirebaseAuth = FirebaseAuth.getInstance()
-//        val firebaseUser = mFirebaseAuth.uid.toString()
-//        var box_coll = "Error"
-//        Log.d("ee",firebaseUser)
-//        FirebaseFirestore.getInstance().collection("UserList").whereEqualTo("Uid", firebaseUser)
-//            .get().addOnSuccessListener { documents ->
-//                if (documents != null) {
-//                    for (document in documents) {
-//                        box_coll = document.reference.id
-//                        Log.d("er",box_coll)
-//                    }
-//
-//                    //                    if (document.exists()) {
-//                    //                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-//                    //                    } else {
-//                    //                        Log.d(TAG, "No such document");
-//                    //                    }
-//                    //                } else {
-//                    //                    Log.d(TAG, "get failed with ", task.getException());
-//                }
-//            }
-//
-//        Log.d("rr",box_coll)
-//        return future
-//    }
-//}
