@@ -22,7 +22,7 @@ class Log_data (object):
         self.usercode = True
         delivery_info = "User"
       now = time.localtime()
-      current_time = '%04d%02d%02d%02d%02d' % (now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour, now.tm_min)
+      current_time = '%04d%02d%02d%02d%02d%02d' % (now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour, now.tm_min, now.tm_sec)
       self.Coll_ref.document(u'Log').update( {f'{current_time}': {
       u'Code': f'{self.Code}',
       u'Date': f'{current_time}',
