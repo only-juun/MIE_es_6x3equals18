@@ -44,7 +44,7 @@ class Log_data (object):
 
 # 바코드 검색 함수
 def find_CodeValid(code):
-    values = db.collection(u'parkjinho').where(u'code', u'==', f'{code}').stream()
+    values = db.collection(u'box001').where(u'code', u'==', f'{code}').stream()
     for val in values:
         return val.get(u'Info')
     return 0
@@ -71,7 +71,7 @@ lock_module = Locking_module(16)              # 잠금 장치 모듈 16번 핀
 cred = credentials.Certificate("./big-box-key.json")
 firebase_admin.initialize_app(cred)
 db = firestore.client()
-barcode_ref = db.collection(u'parkjinho')      ## Collection 이름 수정 ##
+barcode_ref = db.collection(u'box001')      ## Collection 이름 수정 ##
 
 time_array = [0,0,0]
 docs =barcode_ref.stream() 
@@ -102,6 +102,7 @@ while(1):
               # 어플리케이션으로 알림 전송 코드 
               print("10초 이내에 유효하지 않은 바코드 3회 이상 입력됨")
               print("Send info to App")
+              now = time.localtime()
               current_time = '%04d%02d%02d%02d%02d' % (now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour, now.tm_min)
               barcode_ref.document(u'Log').update( {f'{current_time}': {
                 u'Event': u'유효하지 않은 바코드가 3회 이상 인식되었습니다.' } } )
@@ -172,8 +173,8 @@ while(1):
 
 
 
-   
-    
+
+
     # 로그(close) 추가
     #door_open = False 
     #log.LogUpload('택배 함이 닫힙니다.')  # 택배 도착에 대한 로그 추가
