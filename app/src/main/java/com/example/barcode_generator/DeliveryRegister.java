@@ -76,7 +76,7 @@ public class DeliveryRegister extends AppCompatActivity {
         //blank.set(Map.of("code",Invoice,"info",Contents));
 
         LocalDateTime current = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmm");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
         String formatted_time = current.format(formatter);
 //        Float float_time = Float.parseFloat(formatted_time);
         Long long_time = Long.parseLong(formatted_time);
