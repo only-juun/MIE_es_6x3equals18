@@ -3,10 +3,44 @@
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
+from firebase_admin import messaging
+#from pyfcm import FCMNotification
 import RPi.GPIO as GPIO
 import time
 
+class Log_data (object):
+    def __init__(self, Boxname, code, DocSnapshot):
+      self.Coll_ref = Boxname
+      self.Doc_snapshot = DocSnapshot
+      self.Code = code
 
+    def LogUpload(self, msg):
+      if 'Info' in self.Doc_snapshot.to_dict():
+        self.usercode = False
+        delivery_info = self.Doc_snapshot.get(u'Info')
+      else :
+        self.usercode = True
+        delivery_info = "User"
+      now = time.localtime()
+      current_time = '%04d%02d%02d%02d%02d' % (now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour, now.tm_min)
+      self.Coll_ref.document(u'Log').update( {f'{current_time}': {
+      u'Code': f'{self.Code}',
+      u'Date': f'{current_time}',
+      u'Event': f'{msg}',
+      u'Info': f'{delivery_info}' } } )
+
+    def change_valid(self):
+      if self.usercode == False:
+        self.Doc_snapshot.reference.update({u'valid': False})
+      
+
+
+    # í˜„ì¬ ì“°ì§€ ì•ŠëŠ” ì½”ë“œë¡œ ë°›ì€ íƒë°°ì˜ documentë¥¼ ì‚­ì œí•˜ëŠ” í•¨ìˆ˜
+    # def delete(self):
+    #   self.Doc_ref.delete()
+      
+
+    
 def lock_open(pin):
     print("open")
     GPIO.output(pin, True)
@@ -23,7 +57,7 @@ GPIO.setup(lock_pin, GPIO.OUT)
 cred = credentials.Certificate("./barcodedb-efafb-firebase-adminsdk-wujo4-01ed441f25.json")
 firebase_admin.initialize_app(cred)
 db = firestore.client()
-barcode_ref = db.collection(u'bigbox')
+barcode_ref = db.collection(u'box001')
 
 
 
@@ -34,48 +68,80 @@ docs = barcode_ref.stream()
 print(docs)
 for doc in docs:
   print(u'{} => {}'.format(doc.id, doc.to_dict()))
+  
+  
+#  # This registration token comes from the client FCM SDKs.
+# registration_token = barcode_ref.document("UserAccount").get({u'Token'}).to_dict()['Token']
+# # print(u'{}'.format(registration_token))
+
+#  # See documentation on defining a message payload.
+# message = messaging.Message(
+#   notification=messaging.Notification(
+#     title='ë„ë‚œ ê°ì§€',
+#     body=f'{barcode_ref}, íƒë°°í•¨ì— ì¶©ê²©ì´ ê°ì§€ë˜ì—ˆìŠµë‹ˆë‹¤.',  # ì˜ˆì‹œë¡œ ë„£ì–´ë†“ì€ ë³€ìˆ˜
+#   ),
+#   token=registration_token,
+# )
+
+#  # Send a message to the device corresponding to the provided
+#  # registration token.
+# response = messaging.send(message)
+#  # Response is a message ID string.
+# # print('Successfully sent message:', response)
+
+
+
+
 
 
 while(1):
   scan_result = input("Barcode scaner module: ")
-  # ¹ÙÄÚµå ½ºÄµ Á¤º¸°¡ DB¿¡ ÀÖ´ÂÁö È®ÀÎÇØ¼­ ÀÖ´ÂÁö ¾ø´ÂÁö ¾Ë°ÔµÊ
-  # À¯È¿ ¹ÙÄÚµå(»ç¿ëÀÚ, ¿î¼ÛÀå)ÀÏ °æ¿ì door_open = True
-  # À¯È¿¹ÙÄÚµå°¡ ¾Æ´Ñ °æ¿ì, invalid_access++ 
+  # ë°”ì½”ë“œ ìŠ¤ìº” ì •ë³´ê°€ DBì— ìˆëŠ”ì§€ í™•ì¸í•´ì„œ ìˆëŠ”ì§€ ì—†ëŠ”ì§€ ì•Œê²Œë¨
+  # ìœ íš¨ ë°”ì½”ë“œ(ì‚¬ìš©ì, ìš´ì†¡ì¥)ì¼ ê²½ìš° door_open = True
+  # ìœ íš¨ë°”ì½”ë“œê°€ ì•„ë‹Œ ê²½ìš°, invalid_access++
   query_ref = barcode_ref.where(u'code' , u'==',scan_result).get()      # Type: List
-  # print(query_ref.id) »ç¿ë ºÒ°¡
-  if len(query_ref)==0:        # ¹ÙÄÚµå°¡ ÀúÀåµÇ¾îÀÖÁö ¾ÊÀº °æ¿ì
+  # print(query_ref.id) ì‚¬ìš© ë¶ˆê°€
+  if len(query_ref)==0:        # ë°”ì½”ë“œê°€ ì €ì¥ë˜ì–´ìˆì§€ ì•Šì€ ê²½ìš°
     door_open = False
     print("invalid barcode")
     invalid_access = invalid_access+1
   else:
     doc = query_ref[0]
-    valid_barcode_document = doc.id
-    door_open = True
-    
-    lock_open(lock_pin)
-    time.sleep(5)
-    
-    # ·Î±×(open) Ãß°¡ ÄÚµå ¾²±â
-    
-    lock_close(lock_pin)
-    time.sleep(3)
-    
-    # ·Î±×(close) Ãß°¡ ÄÚµå ¾²±â
-    
-    door_open = False 
+    valid_barcode_document = doc.id   # valid_barcode_document : ì‹¤ì œ document ì´ë¦„
+    if (doc.get(u'valid') == False):
+      door_open = False
+      print("invalid barcode")
+      invalid_access = invalid_access+1
+
+    else :
+      door_open = True
+      lock_open(lock_pin)
+      time.sleep(1) # sleep(5)
+      
+      # ë¡œê·¸(open) ì¶”ê°€ ì½”ë“œ ì“°ê¸°
+      log = Log_data(Boxname=barcode_ref, code=scan_result, DocSnapshot=doc)
+      print(doc.to_dict())
+      
+      now = time.localtime()
+      current_time = '%04d%02d%02d%02d%02d' % (now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour, now.tm_min)
+      log.LogUpload('íƒë°°ê°€ ë„ì°©í•˜ì˜€ìœ¼ë©° í•¨ì´ ì—´ë¦½ë‹ˆë‹¤.')  # íƒë°° ë„ì°©ì— ëŒ€í•œ ë¡œê·¸ ì¶”ê°€
+
+      lock_close(lock_pin)
+      time.sleep(3)
+      
+      # ë¡œê·¸(close) ì¶”ê°€ ì½”ë“œ ì“°ê¸°
+      door_open = False
+      log.LogUpload('íƒë°° í•¨ì´ ë‹«í™ë‹ˆë‹¤.')  # íƒë°° ë„ì°©ì— ëŒ€í•œ ë¡œê·¸ ì¶”ê°€
+      log.change_valid()
     
   if invalid_access > 2:
     print("Send info to App")
-    # ¾îÇÃ¸®ÄÉÀÌ¼ÇÀ¸·Î ¾Ë¸² Àü¼Û ÄÚµå ÀÛ¼º
-    invalid_access = 0         # ÃÊ±âÈ­  
-      
+
+    # ì–´í”Œë¦¬ì¼€ì´ì…˜ìœ¼ë¡œ ì•Œë¦¼ ì „ì†¡ ì½”ë“œ ì‘ì„±
+    current_time = '%04d%02d%02d%02d%02d' % (now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour, now.tm_min)
+    barcode_ref.document(u'Log').update( {f'{current_time}': {
+      u'Event': u'ì˜ëª»ëœ ë°”ì½”ë“œê°€ ì¸ì‹ë˜ì—ˆìŠµë‹ˆë‹¤.' } } )
+
+    invalid_access = 0         # ì´ˆê¸°í™”
     
-     
-    
-# µ¥ÀÌÅÍ Ãß°¡: ÀÌ¿ë 
-#doc_ref = db.collection(u'users').document(u'alovelace')
-#doc_ref.set({
-#    u'first': u'Ada',
-#    u'last': u'Lovelace',
-#    u'born': 1815
-#})
+
