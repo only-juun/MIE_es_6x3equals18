@@ -76,15 +76,24 @@ public class DeliveryRegister extends AppCompatActivity {
         //blank.set(Map.of("code",Invoice,"info",Contents));
 
         LocalDateTime current = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmm");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
         String formatted_time = current.format(formatter);
+//        Float float_time = Float.parseFloat(formatted_time);
+        Long long_time = Long.parseLong(formatted_time);
+
+        DateTimeFormatter onlyStr_format = DateTimeFormatter.ofPattern("MM-dd_HH:mm");
+        String OnlyStr_time = current.format(onlyStr_format);
+//        Float float_time = Float.parseFloat(formatted_time);
+
 
         Intent receiveIntent = getIntent();
         String coll_name = receiveIntent.getStringExtra("boxname");
 
         db = FirebaseFirestore.getInstance().collection(coll_name);
-       // db.document(formatted_time+Contents).set(Map.of("code",Invoice,"Info",Contents,"date", Integer.parseInt(formatted_time),"arrive", False))
-        db.add(Map.of("code",Invoice,"Info",Contents));
+
+        //db.document(Contents.toString()).set( (Map.of("code", Invoice,"Info",Contents,"date", int_time,"arrive", false)), SetOptions.merge());
+        // db.add(Map.of("code",Invoice,"Info",Contents));
+        db.document(OnlyStr_time+'_'+Contents).set((Map.of("code", Invoice,"Info",Contents, "Date", long_time, "valid", true)), SetOptions.merge());
         db.document("Log").set((Map.of(formatted_time , Map.of("Code",Invoice, "Date", formatted_time,"Event","택배 등록","Info", Contents))), SetOptions.merge());
         //db.whereEqualTo().get().
     }

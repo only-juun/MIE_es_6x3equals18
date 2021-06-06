@@ -52,10 +52,6 @@ public class UserDelete extends AppCompatActivity {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 document.getReference().delete();
                             }
-                            Toast.makeText(UserDelete.this, "회원탈퇴가 완료되었습니다.", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(UserDelete.this, LoginActivity.class);
-                            startActivity(intent);
-                            finish();
                         } else {
                             Toast.makeText(UserDelete.this, "회원탈퇴가 실패하였습니다.", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(UserDelete.this, MainActivity.class);
@@ -64,6 +60,15 @@ public class UserDelete extends AppCompatActivity {
                         }
                     }
                 });
+                if(db.collection(coll_name).whereEqualTo("name", coll_name).get().isSuccessful() == false) {
+                    db.collection("UserList").document(coll_name).delete();
+                    mFirebaseAuth.getCurrentUser().delete();
+                    Toast.makeText(UserDelete.this, "회원탈퇴가 완료되었습니다.", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(UserDelete.this, LoginActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+
             }
         });
 

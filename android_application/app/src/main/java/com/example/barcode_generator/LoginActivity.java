@@ -24,6 +24,7 @@ import org.jetbrains.annotations.NotNull;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -60,6 +61,32 @@ public class LoginActivity extends AppCompatActivity {
                                         for (QueryDocumentSnapshot document : task.getResult()) {
                                             db = document.getId();
                                         }
+
+                                        // FCM Token upload firebase
+                                        FirebaseMessaging.getInstance().getToken()
+                                                .addOnCompleteListener(new OnCompleteListener<String>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<String> task) {
+                                                        if (!task.isSuccessful()) {
+                                                            Log.w("TAG", "Fetching FCM registration token failed", task.getException());
+                                                            return;
+                                                        }
+
+                                                        // Get new FCM registration token
+                                                        String token = task.getResult();
+
+                                                        // Log and toast
+                                                        String msg = getString(R.string.msg_token_fmt, token);
+                                                        Log.d("TAG", msg);
+                                                        Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_SHORT).show();
+                                                        FirebaseFirestore.getInstance().collection(db).document("UserAccount").update("Token",token);
+
+                                                    }
+                                                });
+
+
+
+
                                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                         intent.putExtra("boxname", db);
                                         startActivity(intent);//현재 액티비티 파괴
