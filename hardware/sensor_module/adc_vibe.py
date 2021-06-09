@@ -6,6 +6,8 @@ import sys, os
 import requests
 from firebase_admin import credentials
 from firebase_admin import storage
+from firebase_admin import firestore
+from firebase_admin import messaging
 from uuid import uuid4
 from picamera import PiCamera
 
@@ -26,6 +28,8 @@ PrivateKeyPath = "./privateServiceKey.json"
 
 cred = credentials.Certificate(PrivateKeyPath)
 firebase_admin.initialize_app(cred, {'storageBucket':f"{projectID}.appspot.com"})
+db = firestore.client()
+barcode_ref = db.collection(u'box')
 bucket = storage.bucket()
 
 
@@ -98,20 +102,41 @@ def initCount():
 		#print(current_time)
 
 
+def uploadLog(msg, info):
+	global barcode_ref
+	currentTime = time.localtime()
+	timeStampString = '%04d%02d%02d%02d%02d%02d' % (currentTime.tm_year, currentTime.tm_mon, currentTime.tm_mday, currentTime.tm_hour, currentTime.tm_min, currentTime.tm_sec)
+	barcode_ref.document(u'Log').update( {f'{timeStampString}': {
+	u'Code': 'None',
+	u'Date': f'{timeStampString}',
+	u'Event': f'{msg}',
+	u'Info': f'{info}'}})
+
+
+def sendCloudMessage(title, msg):
+	global barcode_ref
+	registration_token = barcode_ref.document("UserAccount").get({u'Token'}).to_dict()['Token']
+	message = messaging.Message(
+		notification=messaging.Notification(
+			title=f'{title}',
+    		body=f'{barcode_ref}, {msg}'
+			),
+  		token=registration_token)
+
+	response = messaging.send(message)
+
+
 while True :
 
 	initCount()
-
 	if detectStrangeVibe():
-
 		vibeDetectionCount = 0
 		reference_time = None
+		uploadLog("도난 시도 감지", "택배함의 이상 진동이 감지되었습니다.")
+		sendCloudMessage("도난 시도 감지", "택배함의 이상 진동이 감지되었습니다.")
 
-		print("Strange Vibration is Detected.")
-		
-		for i in range(4):
+		for i in range(5):
 			capture_image()
-
 		clearAll()
 		continue
 
