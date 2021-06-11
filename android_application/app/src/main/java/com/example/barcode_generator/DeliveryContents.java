@@ -1,29 +1,30 @@
 package com.example.barcode_generator;
 
 public class DeliveryContents {
-    private String Invoice;
-    private String Contents;
+    private String code;
+    private String Info;
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getInfo() {
+        return Info;
+    }
+
+    public void setInfo(String info) {
+        Info = info;
+    }
 
     public DeliveryContents() { }
 
-    public String getInvoice() {
-        return Invoice;
-    }
 
-    public void setInvoice(String invoice) {
-        Invoice = invoice;
-    }
-
-    public String getContents() {
-        return Contents;
-    }
-
-    public void setContents(String contents) {
-        Contents = contents;
-    }
-
-    public DeliveryContents(String Invoice, String Contents){
-        this.Contents = Contents;
-        this.Invoice = Invoice;
+    public DeliveryContents(String code, String Info){
+        this.Info = Info;
+        this.code = code;
     }
 }

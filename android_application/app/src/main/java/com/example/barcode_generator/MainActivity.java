@@ -3,24 +3,14 @@ package com.example.barcode_generator;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
-
-import org.jetbrains.annotations.NotNull;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -40,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
         Button btn_qr = findViewById(R.id.btn_qr);
         Button btn_log = findViewById(R.id.btn_log);
         Button btn_delete = findViewById(R.id.btn_delete);
+        Button btn_Dlist = findViewById(R.id.btn_Dlist);
 
         btn_qr.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,11 +58,28 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        btn_Dlist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, deliverymenu.class);
+                intent.putExtra("boxname", coll_name);
+                startActivity(intent);
+            }
+        });
+
         btn_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, UserDelete.class);
                 intent.putExtra("boxname", coll_name);
+                startActivity(intent);
+            }
+        });
+        btn_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, UserDelete.class);
                 startActivity(intent);
             }
         });
