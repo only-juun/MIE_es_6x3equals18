@@ -34,7 +34,7 @@ PrivateKeyPath = "./privateServiceKey.json"
 cred = credentials.Certificate(PrivateKeyPath)
 firebase_admin.initialize_app(cred, {'storageBucket':f"{projectID}.appspot.com"})
 db = firestore.client()
-barcode_ref = db.collection(u'box')
+barcode_ref = db.collection(u'box001')
 bucket = storage.bucket()
 
 
@@ -48,9 +48,9 @@ def fileUpload(file):
 
 
 def capture_image(imageSequence):
-	global timeStampString
+    global timeStampString
     basename = timeStampString
-	suffix = str(imageSequence)
+    suffix = "00"+str(imageSequence)+".png"
     filename = "_".join([basename, suffix])
 
     camera = PiCamera()

@@ -3,6 +3,7 @@
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
+from firebase_admin import messaging
 import RPi.GPIO as GPIO
 import time
 
@@ -64,7 +65,7 @@ class Locking_module(object):
       print("close")
       
 def uploadLog(msg, info):
-  global barcode_ref
+	global barcode_ref
 	currentTime = time.localtime()
 	timeStampString = '%04d%02d%02d%02d%02d%02d' % (currentTime.tm_year, currentTime.tm_mon, currentTime.tm_mday, currentTime.tm_hour, currentTime.tm_min, currentTime.tm_sec)
 	barcode_ref.document(u'Log').update( {f'{timeStampString}': {
