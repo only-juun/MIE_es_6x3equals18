@@ -4,6 +4,8 @@ import firebase_admin
 import datetime
 import sys, os
 import requests
+import neopixel
+import board
 from firebase_admin import credentials
 from firebase_admin import storage
 from firebase_admin import firestore
@@ -12,16 +14,19 @@ from uuid import uuid4
 from picamera import PiCamera
 
 COUNT_REFRESH_INTERVAL = 30
-THRESHOLD_VALUE = 200
+THRESHOLD_VALUE = 100
 NORMAL_CONTEXT_COUNT = 30
 
 vibeDetectionCount = 0
 reference_time = None
 current_time = None
+timeStampString = ""
 
 spi=spidev.SpiDev()
 spi.open(0, 0)
 spi.max_speed_hz=1000000
+
+pixels = neopixel.NeoPixel(board.D18, 8)
 
 projectID = "big-box-2e5bb"
 PrivateKeyPath = "./privateServiceKey.json"
@@ -42,9 +47,10 @@ def fileUpload(file):
     blob.upload_from_filename(filename='./'+file, content_type='image/png')
 
 
-def capture_image():
-    basename = "test"
-    suffix = datetime.datetime.now().strftime("%Y%m%d_%H%M%S") + '.png'
+def capture_image(imageSequence):
+	global timeStampString
+    basename = timeStampString
+	suffix = str(imageSequence)
     filename = "_".join([basename, suffix])
 
     camera = PiCamera()
@@ -103,7 +109,7 @@ def initCount():
 
 
 def uploadLog(msg, info):
-	global barcode_ref
+	global barcode_ref, timeStampString
 	currentTime = time.localtime()
 	timeStampString = '%04d%02d%02d%02d%02d%02d' % (currentTime.tm_year, currentTime.tm_mon, currentTime.tm_mday, currentTime.tm_hour, currentTime.tm_min, currentTime.tm_sec)
 	barcode_ref.document(u'Log').update( {f'{timeStampString}': {
@@ -119,12 +125,19 @@ def sendCloudMessage(title, msg):
 	message = messaging.Message(
 		notification=messaging.Notification(
 			title=f'{title}',
-    		body=f'{barcode_ref}, {msg}'
+    		body=f'{msg}'
 			),
   		token=registration_token)
 
 	response = messaging.send(message)
 
+def turnOnLight():
+	global pixels
+	pixels.fill((255, 255, 255))
+
+def turnOffLight():
+	global pixels
+	pixels.fill((0, 0, 0))
 
 while True :
 
@@ -135,8 +148,10 @@ while True :
 		uploadLog("도난 시도 감지", "택배함의 이상 진동이 감지되었습니다.")
 		sendCloudMessage("도난 시도 감지", "택배함의 이상 진동이 감지되었습니다.")
 
+		turnOnLight()
 		for i in range(5):
-			capture_image()
+			capture_image(i)
+		turnOffLight()
 		clearAll()
 		continue
 

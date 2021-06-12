@@ -62,6 +62,28 @@ class Locking_module(object):
     def lock_close(self):
       GPIO.output(self.pin, False)
       print("close")
+      
+def uploadLog(msg, info):
+  global barcode_ref
+	currentTime = time.localtime()
+	timeStampString = '%04d%02d%02d%02d%02d%02d' % (currentTime.tm_year, currentTime.tm_mon, currentTime.tm_mday, currentTime.tm_hour, currentTime.tm_min, currentTime.tm_sec)
+	barcode_ref.document(u'Log').update( {f'{timeStampString}': {
+	u'Code': 'None',
+	u'Date': f'{timeStampString}',
+	u'Event': f'{msg}',
+	u'Info': f'{info}'}})
+
+# FCM 전송 #
+def sendCloudMessage(title, msg):
+	global barcode_ref
+	registration_token = barcode_ref.document("UserAccount").get({u'Token'}).to_dict()['Token']
+	message = messaging.Message(
+		notification=messaging.Notification(
+			title=f'{title}',
+    		body=f'{msg}'
+			),
+  		token=registration_token)
+	response = messaging.send(message)
 
 
 door_sensor = 37                              # 문 닫힘 감지 센서 37번(Physical) 핀
@@ -96,20 +118,13 @@ while(1):
       time_array[invalid_access] = time.time()    # 현재 시간 초단위로 저장
       invalid_access = invalid_access+1
       invalid_access_time = int(time_array[2])-int(time_array[0])
-      
       if invalid_access >2:
           if invalid_access_time<10 and invalid_access_time>1:
               # 어플리케이션으로 알림 전송 코드 
               print("10초 이내에 유효하지 않은 바코드 3회 이상 입력됨")
               print("Send info to App")
-              now = time.localtime()
-              current_time = '%04d%02d%02d%02d%02d' % (now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour, now.tm_min)
-              barcode_ref.document(u'Log').update( {f'{current_time}': {
-                u'Event': u'유효하지 않은 바코드가 3회 이상 인식되었습니다.' } } )
-                #######################################################################
-                #         잘못된 바코드가 인식되었다는 로그 전송은 되는것같음             #
-                ######### 알림 전송하는 코드 추가 필요함    FCM                 #########
-                #######################################################################
+              uploadLog("유효하지 않은 바코드", "유효하지 않은 바코드가 3회 이상 인식되었습니다.")
+              sendCloudMessage("인증 3회 이상 실패", "유효하지 않은 바코드가 3회 이상 인식되었습니다.")
 
           else:
           # 유효하지않은 바코드가 입력 되었지만 단시간 내에 발생한 것이 아닐 때
@@ -123,6 +138,8 @@ while(1):
     # 인식한 바코드가 있는 경우
     doc = query_ref[0]
     valid_barcode_document = doc.id
+    QR = False
+
     if(doc.get(u'valid') == False):
       # 인식한 바코드가 있지만 Valid하지 않은 경우
       door_open = False
@@ -134,11 +151,13 @@ while(1):
       print(doc.to_dict())
       now = time.localtime()
       current_time = '%04d%02d%02d%02d%02d' % (now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour, now.tm_min)
-      log.LogUpload('택배가 도착하였으며 함이 열립니다.')  # 택배 도착에 대한 로그 추가
-      #######################################################################
-      # 위 코드에서 Current_time 로그로 저장 잘되는지 확인하고 되면 이부분 삭제  #
-      # 추가로 문 열리면 알림(FCM) 전송하는지?  전송하면 알림 전송 코드도 추가해줘!
-      #######################################################################
+      log.LogUpload('택배함이 열립니다.')  # 택배 도착에 대한 로그 추가
+      
+      if doc.id == "QRcode":
+        QR = True
+      if not QR:
+        info = doc.get(u'Info')
+        sendCloudMessage("택배 도착", "도착 택배 정보 : {}".format(info))
 
       door_open = True        # 로그 저장 후 솔레노이드 잠금 해제
       lock_module.lock_open()
@@ -156,11 +175,7 @@ while(1):
       if i > 3:
         # 택배함 문이 닫히고 3초가 지난 후에 잠금장치가 잠김
         log.LogUpload('택배 함이 닫힙니다.')  # 택배함 잠금 로그 추가
-        log.change_valid()
-
-      ###################################################################
-      # 문이 닫힐때 알림(FCM) 전송하는지?  전송하면 알림 전송 코드도 추가해줘#
-      ###################################################################    
+        log.change_valid() 
        
         lock_module.lock_close()
         door_open = False
@@ -169,22 +184,3 @@ while(1):
         break
       # else:
       #   print("Still opened")
-
-
-
-
-
-
-    # 로그(close) 추가
-    #door_open = False 
-    #log.LogUpload('택배 함이 닫힙니다.')  # 택배 도착에 대한 로그 추가
-      
-    
-
-# 데이터 추가: 이용 
-#doc_ref = db.collection(u'users').document(u'alovelace')
-#doc_ref.set({
-#    u'first': u'Ada',
-#    u'last': u'Lovelace',
-#    u'born': 1815
-#})
