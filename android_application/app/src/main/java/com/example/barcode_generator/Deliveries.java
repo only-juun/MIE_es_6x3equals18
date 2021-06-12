@@ -67,7 +67,9 @@ public class Deliveries extends AppCompatActivity {
     }
 
     private void EventChangeListener() {
-        db.collection("box").whereEqualTo("valid",true)
+        Intent receiveIntent = getIntent();
+        String coll_name = receiveIntent.getStringExtra("boxname");
+        db.collection(coll_name).whereEqualTo("valid",true)
             .addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable @org.jetbrains.annotations.Nullable QuerySnapshot value, @Nullable @org.jetbrains.annotations.Nullable FirebaseFirestoreException error) {
@@ -82,7 +84,9 @@ public class Deliveries extends AppCompatActivity {
                 for (DocumentChange dc : value.getDocumentChanges()){
 
                     if (dc.getType() == DocumentChange.Type.ADDED){
-                        arrayList.add(dc.getDocument().toObject(DeliveryContents.class));
+                        if(dc.getDocument().contains("Info")) {
+                            arrayList.add(dc.getDocument().toObject(DeliveryContents.class));
+                        }
                     }
 
                     adapter.notifyDataSetChanged();

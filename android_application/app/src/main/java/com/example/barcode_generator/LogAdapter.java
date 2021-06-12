@@ -1,6 +1,7 @@
 package com.example.barcode_generator;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +39,7 @@ public class LogAdapter extends RecyclerView.Adapter <LogAdapter.LogViewHolder> 
 
         holder.Event.setText(logContents.getEvent());
         holder.Date.setText(logContents.getDate());
+        Log.d("DATE",logContents.getDate());
     }
 
     @Override
