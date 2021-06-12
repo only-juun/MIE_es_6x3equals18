@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -52,7 +53,9 @@ public class Complete extends AppCompatActivity {
     }
     //바코드 안뜨도록 걸러내는 작업 필요함
     private void EventChangeListener() {
-        db.collection("box").whereEqualTo("valid",false)
+        Intent receiveIntent = getIntent();
+        String coll_name = receiveIntent.getStringExtra("boxname");
+        db.collection(coll_name).whereEqualTo("valid",false)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable @org.jetbrains.annotations.Nullable QuerySnapshot value,
@@ -69,7 +72,9 @@ public class Complete extends AppCompatActivity {
                         for (DocumentChange dc : value.getDocumentChanges()){
 
                             if (dc.getType() == DocumentChange.Type.ADDED){
-                                arrayList.add(dc.getDocument().toObject(DeliveryContents.class));
+                                if(dc.getDocument().contains("Info")) {
+                                    arrayList.add(dc.getDocument().toObject(DeliveryContents.class));
+                                }
                             }
 
                             adapter.notifyDataSetChanged();

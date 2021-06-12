@@ -46,13 +46,13 @@ public class CustomAdapter extends RecyclerView.Adapter <CustomAdapter.CustomVie
     }
 
     public class CustomViewHolder extends RecyclerView.ViewHolder {
-                TextView code;
-                TextView Info;
+        TextView code;
+        TextView Info;
 
         public CustomViewHolder(@NonNull @NotNull View itemView) {
-                    super(itemView);
-                    code = itemView.findViewById(R.id.tv_invoice);
-                    Info = itemView.findViewById(R.id.tv_contents);
+            super(itemView);
+            code = itemView.findViewById(R.id.tv_invoice);
+            Info = itemView.findViewById(R.id.tv_contents);
 
         }
     }
