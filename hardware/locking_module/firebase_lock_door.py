@@ -104,7 +104,7 @@ for doc in docs:
 	print(doc.id , doc.to_dict())
 
 invalid_access = 0                              #  유효하지않은 바코드 인식 횟수 카운트
-
+time_stamp = 0
 
 while(1):
   scan_result = input("Barcode scaner module: ")
@@ -116,25 +116,22 @@ while(1):
   if len(query_ref)==0:        # 바코드가 저장되어있지 않은 경우+ 바코드가 Invalid한 경우
       door_open = False
       print("invalid barcode")
-      time_array[invalid_access] = time.time()    # 현재 시간 초단위로 저장
-      invalid_access = invalid_access+1
-      invalid_access_time = int(time_array[2])-int(time_array[0])
+     
+      access_time = time.time() 
+      if invalid_access==0:
+          time_stamp = access_time
+      if access_time - time_stamp <= 10:
+          invalid_access = invalid_access+1
+      else:
+          invalid_access = 1
+          time_stamp = access_time 
       if invalid_access >2:
-          if invalid_access_time<10 and invalid_access_time>1:
-              # 어플리케이션으로 알림 전송 코드 
-              print("10초 이내에 유효하지 않은 바코드 3회 이상 입력됨")
-              print("Send info to App")
-              uploadLog("유효하지 않은 바코드", "유효하지 않은 바코드가 3회 이상 인식되었습니다.")
-              sendCloudMessage("인증 3회 이상 실패", "유효하지 않은 바코드가 3회 이상 인식되었습니다.")
-
-          else:
-          # 유효하지않은 바코드가 입력 되었지만 단시간 내에 발생한 것이 아닐 때
-            print("invalid_access_(time) 리셋")
-
-          # 초기화
-          time_array = [0,0,0]
-          invalid_access = 0
-      
+          # 어플리케이션으로 알림 전송 코드 
+          print("10초 이내에 유효하지 않은 바코드 3회 이상 입력됨")
+          print("Send info to App")
+          uploadLog("유효하지 않은 바코드", "유효하지 않은 바코드가 3회 이상 인식되었습니다.")
+          sendCloudMessage("인증 3회 이상 실패", "유효하지 않은 바코드가 3회 이상 인식되었습니다.")
+          invalid_access = 0 
   else:
     # 인식한 바코드가 있는 경우
     doc = query_ref[0]
@@ -144,8 +141,21 @@ while(1):
     if(doc.get(u'valid') == False):
       # 인식한 바코드가 있지만 Valid하지 않은 경우
       door_open = False
-      print("invalid barcode")
-      invalid_access = invalid_access+1
+      access_time = time.time() 
+      if invalid_access==0:
+         time_stamp = access_time
+      if access_time - time_stamp <= 10:
+         invaild_access = invalid_access +1 
+      
+      else:
+          invalid_access = 1
+          time_stamp = access_time 
+      if invalid_access > 2:  
+          print("10초 이내에 유효하지 않은 바코드 3회 이상 입력됨")
+          print("Send info to App")
+          uploadLog("유효하지 않은 바코드", "유효하지 않은 바코드가 3회 이상 인식되었습니다.")
+          sendCloudMessage("인증 3회 이상 실패", "유효하지 않은 바코드가 3회 이상 인식되었습니다.")
+          invalid_access = 0 
     else:
       # 로그(open) 추가
       log = Log_data(Boxname=barcode_ref, code=scan_result, DocSnapshot=doc)
