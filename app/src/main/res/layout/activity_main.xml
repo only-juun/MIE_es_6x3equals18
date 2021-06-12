@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <Button
+        android:id="@+id/btn_qr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="250dp"
+        android:text="QR코드"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btn_Dregister"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="택배등록"
+        app:layout_constraintEnd_toEndOf="@+id/btn_qr"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/btn_qr"
+        app:layout_constraintTop_toBottomOf="@+id/btn_qr" />
+
+    <Button
+        android:id="@+id/btn_log"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="로그목록"
+        app:layout_constraintEnd_toEndOf="@+id/btn_Dlist"
+        app:layout_constraintStart_toStartOf="@+id/btn_Dlist"
+        app:layout_constraintTop_toBottomOf="@+id/btn_Dlist" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="100dp"
+        android:text="BIG PRIVATE BOX"
+        android:textSize="34sp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_qr"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btn_Dlist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="택배목록"
+        app:layout_constraintEnd_toEndOf="@+id/btn_Dregister"
+        app:layout_constraintStart_toStartOf="@+id/btn_Dregister"
+        app:layout_constraintTop_toBottomOf="@+id/btn_Dregister" />
+
+    <Button
+        android:id="@+id/btn_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="회원탈퇴"
+        app:layout_constraintEnd_toEndOf="@+id/btn_log"
+        app:layout_constraintStart_toStartOf="@+id/btn_log"
+        app:layout_constraintTop_toBottomOf="@+id/btn_log" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

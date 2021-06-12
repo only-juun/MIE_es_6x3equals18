@@ -65,14 +65,17 @@ public class LogAdapter extends RecyclerView.Adapter <LogAdapter.LogViewHolder> 
             @Override
             public void onClick(View v) {
                 storageReference = firebaseStorage.getInstance().getReference();
-                ref = storageReference.child(arrayList.get(position).getDate()+".png");
-                ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        String url = uri.toString();
-                        downloadFiles(context,arrayList.get(position).getDate(),".png",DIRECTORY_DOWNLOADS, url);
-                    }
-                });
+                for (int i = 0;i<5;i++) {
+                    ref = storageReference.child(arrayList.get(position).getDate() + "_" + Integer.toString(i) +  ".png");
+                    ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            String url = uri.toString();
+                            downloadFiles(context,arrayList.get(position).getDate(),".png",DIRECTORY_DOWNLOADS, url);
+                        }
+                    });
+                }
+
             }
         });
     }
