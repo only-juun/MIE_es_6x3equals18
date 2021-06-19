@@ -3,7 +3,7 @@
     <img src = "https://img.shields.io/github/issues/only-juun/6x3equals18">
     <img src = "https://img.shields.io/github/forks/only-juun/6x3equals18">
     <img src = "https://img.shields.io/github/stars/only-juun/6x3equals18">
-    <img src="https://img.shields.io/static/v1?label=xycar&message=autodrive" />
+    <img src="https://img.shields.io/static/v1?label=ESE&message=BIG-BOX" />
     <img src="https://img.shields.io/github/languages/top/only-juun/6x3equals18" />
     <img src="https://img.shields.io/github/last-commit/only-juun/6x3equals18"/>
     <img src="https://img.shields.io/github/license/only-juun/6x3equals18" />
@@ -22,3 +22,6 @@
 |팀원|2016430007|남환준|<a href = "https://github.com/only-juun">only-juun</a>|
 |팀원|2016430014|박진호|<a href = "https://github.com/Parkjhjh">Parkjhjh</a>|
 |팀원|2018430042|최두리|<a href = "https://github.com/Deb0r4h">Deb0r4h</a>|
+
+## 최종보고서
+https://capstone.uos.ac.kr/mie/index.php/6x3%3D18_-_BIG_Private_Box
