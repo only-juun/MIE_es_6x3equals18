@@ -9,12 +9,14 @@
     <img src="https://img.shields.io/github/license/only-juun/6x3equals18" />
 </div>
 
-## 팀명: 6x3equals18
+## 팀명
+6x3equals18
 
 ## 개발 주제: BIG(Barcode-Identification-Guaranteeing) Private Storage Box
 QR코드를 활용한 개인용 무인택배함 시스템 설계
 
-## 개발 기간: 2021.04 ~ 2021.06
+## 개발 기간
+2021.04 ~ 2021.06
 
 ## 구성원
 ||학번 |이름|github username|
