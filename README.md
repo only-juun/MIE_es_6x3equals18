@@ -19,10 +19,10 @@ QR코드를 활용한 개인용 무인택배함 시스템 설계
 ## 구성원
 ||학번 |이름|github username|
 |--|--|--|--|
-|팀장|2016430025|이민하|<a href = "https://github.com/lmh970329">lmh970329</a>|
-|팀원|2016430007|남환준|<a href = "https://github.com/only-juun">only-juun</a>|
-|팀원|2016430014|박진호|<a href = "https://github.com/Parkjhjh">Parkjhjh</a>|
-|팀원|2018430042|최두리|<a href = "https://github.com/Deb0r4h">Deb0r4h</a>|
+|팀장|20164300**|이*하|<a href = "https://github.com/lmh970329">lmh970329</a>|
+|팀원|20164300**|남*준|<a href = "https://github.com/only-juun">only-juun</a>|
+|팀원|20164300**|박*호|<a href = "https://github.com/Parkjhjh">Parkjhjh</a>|
+|팀원|20184300**|최*리|<a href = "https://github.com/Deb0r4h">Deb0r4h</a>|
 
 ## 최종보고서
 https://capstone.uos.ac.kr/mie/index.php/6x3%3D18_-_BIG_Private_Box
