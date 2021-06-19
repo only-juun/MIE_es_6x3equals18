@@ -12,10 +12,11 @@
 ## 팀명: 6x3equals18
 
 ## 개발 주제: BIG(Barcode-Identification-Guaranteeing) Private Storage Box
+QR코드를 활용한 개인용 무인택배함 시스템 설계
 
 ## 개발 기간: 2021.04 ~ 2021.06
 
-## 팀원
+## 구성원
 ||학번 |이름|github username|
 |--|--|--|--|
 |팀장|2016430025|이민하|<a href = "https://github.com/lmh970329">lmh970329</a>|
