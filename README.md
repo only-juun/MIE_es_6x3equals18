@@ -8,6 +8,7 @@
     <img src="https://img.shields.io/github/last-commit/only-juun/6x3equals18"/>
     <img src="https://img.shields.io/github/license/only-juun/6x3equals18" />
 </div>
+
 # 팀명: 6x3equals18
 
 # 개발 주제: BIG(Barcode-Identification-Guaranteeing) Private Storage Box
