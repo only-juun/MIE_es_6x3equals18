@@ -6,11 +6,20 @@ from firebase_admin import firestore
 from firebase_admin import messaging
 import RPi.GPIO as GPIO
 import time
+from evdev import InputDevice, list_devices, categorize, ecodes
+
+keys = {0:None, 1: u'ESC', 2: u'1', 3: u'2', 4: u'3', 5: u'4', 6: u'5', 7: u'6', 8: u'7', 9: u'8', 10: u'9', 11: u'0', 12: u'-', 13: u'=', 14: u'BKSP', 15: u'TAB', 16: u'Q', 17: u'W', 18: u'E', 19: u'R', 20: u'T', 21: u'Y', 22: u'U', 23: u'I', 24: u'O', 25: u'P', 26: u'[', 27: u']', 28: u'CRLF', 29: u'LCTRL', 30: u'A', 31: u'S', 32: u'D', 33: u'F', 34: u'G', 35: u'H', 36: u'J', 37: u'K', 38: u'L', 39: u':', 40: u'"', 41: u'`', 42: u'LSHFT', 43: u'\\', 44: u'Z', 45: u'X', 46: u'C', 47: u'V', 48: u'B', 49: u'N', 50: u'M', 51: u',', 52: u'.', 53: u'/', 54: u'RSHFT', 56: u'LALT', 100: u'RALT'}
 
 i=0
 door_open = False
 GPIO.setmode(GPIO.BOARD)
 GPIO.cleanup()
+
+barcodeDeviceName = "SM SM-2D PRODUCT HID KBW"
+devices = map(InputDevice, list_devices())
+for device in devices:
+  if device.name == barcodeDeviceName:
+    dev = InputDevice(device.fn)
 
 # 로그 기록 클래스 
 class Log_data (object):
@@ -42,6 +51,28 @@ class Log_data (object):
     # def delete(self):
     #   self.Doc_ref.delete()
 
+def scan_barcode():
+  barcode = ""
+  caps = False
+  for event in dev.read_loop():
+    if event.type == ecodes.EV_KEY:
+      data = categorize(event)
+      if data.scancode == 42:
+        if data.keystate == 1:
+          caps = True
+        if data.keystate == 0:
+          caps = False
+      else:
+        if data.keystate == 1:
+          if data.scancode == 28:
+            return barcode
+          elif data.scancode >=2 and data.scancode <=11:
+            barcode += keys[data.scancode]
+          else:
+            if caps:
+              barcode += keys[data.scancode]
+            if not caps:
+              barcode += keys[data.scancode].lower()
 
 # 바코드 검색 함수
 def find_CodeValid(code):
@@ -76,13 +107,10 @@ def uploadLog(msg, info):
 
 # FCM 전송 #
 def sendCloudMessage(title, msg):
-	global barcode_ref
+	global barcode_ref, box_name
 	registration_token = barcode_ref.document("UserAccount").get({u'Token'}).to_dict()['Token']
 	message = messaging.Message(
-		notification=messaging.Notification(
-			title=f'{title}',
-    		body=f'{msg}'
-			),
+		data={"title" : f'{title}', "message" : f'{msg}', "box": f'{box_name}'},
   		token=registration_token)
 	response = messaging.send(message)
 
@@ -91,10 +119,11 @@ door_sensor = 37                              # 문 닫힘 감지 센서 37번(P
 GPIO.setup(door_sensor,GPIO.IN)
 lock_module = Locking_module(16)              # 잠금 장치 모듈 16번 핀
 
-cred = credentials.Certificate("./big-box-key.json")
+cred = credentials.Certificate("/home/pi/6x3equals18/hardware/locking_module/big-box-key.json")
 firebase_admin.initialize_app(cred)
 db = firestore.client()
-barcode_ref = db.collection(u'box001')      ## Collection 이름 수정 ##
+box_name = 'box001'
+barcode_ref = db.collection(box_name)      ## Collection 이름 수정 ##
 
 time_array = [0,0,0]
 docs =barcode_ref.stream() 
@@ -107,7 +136,10 @@ invalid_access = 0                              #  유효하지않은 바코드 
 time_stamp = 0
 
 while(1):
-  scan_result = input("Barcode scaner module: ")
+  #scan_result = input("Barcode scaner module: ")
+  prev_time = time.time() 
+  scan_result = scan_barcode()
+  print(scan_result)
   # 바코드 스캔 정보가 DB에 있는지 확인해서 있는지 없는지 알게됨
   # 유효 바코드(사용자, 운송장)일 경우 door_open = True
   # 유효바코드가 아닌 경우, invalid_access++ 
@@ -142,10 +174,11 @@ while(1):
       # 인식한 바코드가 있지만 Valid하지 않은 경우
       door_open = False
       access_time = time.time() 
+      print("invalid barcode")
       if invalid_access==0:
          time_stamp = access_time
       if access_time - time_stamp <= 10:
-         invaild_access = invalid_access +1 
+         invalid_access = invalid_access +1 
       
       else:
           invalid_access = 1
@@ -164,14 +197,16 @@ while(1):
       current_time = '%04d%02d%02d%02d%02d' % (now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour, now.tm_min)
       log.LogUpload('택배함이 열립니다.')  # 택배 도착에 대한 로그 추가
       
+      door_open = True        # 로그 저장 후 솔레노이드 잠금 해제
+      lock_module.lock_open()
+      print(time.time() - prev_time)
+
       if doc.id == "QRcode":
         QR = True
       if not QR:
         info = doc.get(u'Info')
         sendCloudMessage("택배 도착", "도착 택배 정보 : {}".format(info))
-
-      door_open = True        # 로그 저장 후 솔레노이드 잠금 해제
-      lock_module.lock_open()
+      invalid_access = 0
 
     while door_open:
       #print(i)
@@ -195,3 +230,6 @@ while(1):
         break
       # else:
       #   print("Still opened")
+
+
+
