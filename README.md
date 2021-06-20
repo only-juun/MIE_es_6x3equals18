@@ -60,6 +60,6 @@ https://capstone.uos.ac.kr/mie/index.php/6x3%3D18_-_BIG_Private_Box
 ## 잠금장치 모듈(hardware/locking_module)
 
 
-## 바코드 스캔 모듈(dp_pi)
+## 바코드 스캔 모듈(db_pi)
 
 
