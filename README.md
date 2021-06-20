@@ -15,7 +15,7 @@
 6x3equals18
 
 ## 개발 주제: BIG(Barcode-Identification-Guaranteeing) Private Storage Box
-QR 코드 및 택배 송장 번호 바코드를 활용한 개인용 무인 택배함 시스템 설계
+바코드 인증 방식의 개인용 무인 택배함 시스템 설계
 
 ## 개발 기간
 2021.04.05. ~ 2021.06.21.
@@ -42,10 +42,11 @@ https://capstone.uos.ac.kr/mie/index.php/6x3%3D18_-_BIG_Private_Box
 ### 도난 감지 센서값 설정
 <img src = "https://user-images.githubusercontent.com/79013722/122668339-762ec700-d1f2-11eb-8a32-56d3896ba417.png" width="50%" height="50%">
 
-## 바코드 스캔 모듈(db_pi)
-### 바코드 스캔 모듈 시나리오
-<img src = "https://user-images.githubusercontent.com/79013722/122668277-3831a300-d1f2-11eb-8706-e674b262155c.png" width="50%" height="50%">
+### 도난 감지 알고리즘 플로우차트
+<img src = "https://user-images.githubusercontent.com/79013722/122673519-c7978000-d20b-11eb-8b0b-7ff584b930b3.png">
 
-## 잠금장치 모듈(hardware/locking_module)
+## 바코드 스캔 모듈(db_pi) & 잠금장치 모듈(hardware/locking_module)
+### 바코드 스캔 모듈 시나리오
+<img src = "https://user-images.githubusercontent.com/79013722/122673504-b189bf80-d20b-11eb-83d1-d686e23ed6f4.png">
 
                                                                                                               
