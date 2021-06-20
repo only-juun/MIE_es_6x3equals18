@@ -15,10 +15,10 @@
 6x3equals18
 
 ## 개발 주제: BIG(Barcode-Identification-Guaranteeing) Private Storage Box
-QR코드를 활용한 개인용 무인택배함 시스템 설계
+QR 코드 및 택배 송장 번호 바코드를 활용한 개인용 무인 택배함 시스템 설계
 
 ## 개발 기간
-2021.04 ~ 2021.06
+2021.04.05. ~ 2021.06.21.
 
 ## 구성원
 ||학번 |이름|github username|
@@ -31,7 +31,7 @@ QR코드를 활용한 개인용 무인택배함 시스템 설계
 ## 최종보고서
 https://capstone.uos.ac.kr/mie/index.php/6x3%3D18_-_BIG_Private_Box
 
-## 어플리케이션 구성
+## 어플리케이션(android_application)
 <img src = "https://user-images.githubusercontent.com/79013722/122664590-550fab80-d1dd-11eb-93b9-8caeae00fe37.jpg" width="30%" height="30%"> 로그인 화면: LoginActivity
 
 <img src = "https://user-images.githubusercontent.com/79013722/122664603-66f14e80-d1dd-11eb-8033-7aa04f70d1bb.jpg" width="30%" height="30%"> 회원가입 화면: RegisterActivity
@@ -53,5 +53,13 @@ https://capstone.uos.ac.kr/mie/index.php/6x3%3D18_-_BIG_Private_Box
 <img src = "https://user-images.githubusercontent.com/79013722/122664629-7f616900-d1dd-11eb-83b9-bdc9192851fa.jpg" width="30%" height="30%"> 택배목록(배송완료): Complete
 
 <img src = "https://user-images.githubusercontent.com/79013722/122664630-82f4f000-d1dd-11eb-8477-f068a39748de.jpg" width="30%" height="30%"> 로그목록: LogCheck
+
+## 도난(진동)감지 모듈(hardware/sensor_module)
+
+
+## 잠금장치 모듈(hardware/locking_module)
+
+
+## 바코드 스캔 모듈(dp_pi)
 
 
