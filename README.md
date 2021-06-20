@@ -33,7 +33,18 @@ https://capstone.uos.ac.kr/mie/index.php/6x3%3D18_-_BIG_Private_Box
 
 ## 어플리케이션(android_application)
 ### 어플리케이션 화면구성
-<img src = "https://user-images.githubusercontent.com/79013722/122664590-550fab80-d1dd-11eb-93b9-8caeae00fe37.jpg" width="20%" height="20%"> <img src = "https://user-images.githubusercontent.com/79013722/122664603-66f14e80-d1dd-11eb-8033-7aa04f70d1bb.jpg" width="20%" height="20%"> <img src = "https://user-images.githubusercontent.com/79013722/122664609-6ce72f80-d1dd-11eb-8d6b-eeeb8996642f.jpg" width="20%" height="20%"> <img src = "https://user-images.githubusercontent.com/79013722/122664640-8daf8500-d1dd-11eb-9c50-a7f934ef294d.jpg" width="20%" height="20%"> <img src = "https://user-images.githubusercontent.com/79013722/122664612-72447a00-d1dd-11eb-9c06-59a966913c58.jpg" width="20%" height="20%"> <img src = "https://user-images.githubusercontent.com/79013722/122664616-74a6d400-d1dd-11eb-8819-200238fb7864.jpg" width="20%" height="20%"> <img src = "https://user-images.githubusercontent.com/79013722/122664630-82f4f000-d1dd-11eb-8477-f068a39748de.jpg" width="20%" height="20%"> <img src = "https://user-images.githubusercontent.com/79013722/122664618-783a5b00-d1dd-11eb-84fc-348474479a3e.jpg" width="20%" height="20%"> <img src = "https://user-images.githubusercontent.com/79013722/122664621-7a9cb500-d1dd-11eb-8dac-149f575f5089.jpg" width="20%" height="20%"> <img src = "https://user-images.githubusercontent.com/79013722/122664627-7e303c00-d1dd-11eb-992f-b4f0b7df4bbd.jpg" width="20%" height="20%"> <img src = "https://user-images.githubusercontent.com/79013722/122664629-7f616900-d1dd-11eb-83b9-bdc9192851fa.jpg" width="20%" height="20%"> 
+|화면|내용|
+|<img src = "https://user-images.githubusercontent.com/79013722/122664590-550fab80-d1dd-11eb-93b9-8caeae00fe37.jpg" width="20%" height="20%">|로그인 화면|
+<img src = "https://user-images.githubusercontent.com/79013722/122664603-66f14e80-d1dd-11eb-8033-7aa04f70d1bb.jpg" width="20%" height="20%">|회원가입 화면|
+<img src = "https://user-images.githubusercontent.com/79013722/122664609-6ce72f80-d1dd-11eb-8d6b-eeeb8996642f.jpg" width="20%" height="20%">|회원탈퇴 화면|
+<img src = "https://user-images.githubusercontent.com/79013722/122664640-8daf8500-d1dd-11eb-9c50-a7f934ef294d.jpg" width="20%" height="20%">|메인 화면|
+<img src = "https://user-images.githubusercontent.com/79013722/122664612-72447a00-d1dd-11eb-9c06-59a966913c58.jpg" width="20%" height="20%">|QR코드 화면(활성화)|
+<img src = "https://user-images.githubusercontent.com/79013722/122664616-74a6d400-d1dd-11eb-8819-200238fb7864.jpg" width="20%" height="20%">|QR코드 화면(비활성화)||
+<img src = "https://user-images.githubusercontent.com/79013722/122664630-82f4f000-d1dd-11eb-8477-f068a39748de.jpg" width="20%" height="20%">|택배목록|
+<img src = "https://user-images.githubusercontent.com/79013722/122664618-783a5b00-d1dd-11eb-84fc-348474479a3e.jpg" width="20%" height="20%">|택배등록|
+<img src = "https://user-images.githubusercontent.com/79013722/122664621-7a9cb500-d1dd-11eb-8dac-149f575f5089.jpg" width="20%" height="20%">|택배목록(선택)|
+<img src = "https://user-images.githubusercontent.com/79013722/122664627-7e303c00-d1dd-11eb-992f-b4f0b7df4bbd.jpg" width="20%" height="20%">|택배목록(배송전)|
+<img src = "https://user-images.githubusercontent.com/79013722/122664629-7f616900-d1dd-11eb-83b9-bdc9192851fa.jpg" width="20%" height="20%">|택배목록(배송완료)|
 
 ## 도난(진동)감지 모듈(hardware/sensor_module)
 ### 도난 감지 모듈 구성
