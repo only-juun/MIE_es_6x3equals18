@@ -32,7 +32,7 @@ QR코드를 활용한 개인용 무인택배함 시스템 설계
 https://capstone.uos.ac.kr/mie/index.php/6x3%3D18_-_BIG_Private_Box
 
 ## 어플리케이션 구성
-<img src = "https://user-images.githubusercontent.com/79013722/122664590-550fab80-d1dd-11eb-93b9-8caeae00fe37.jpg" width="30%" height="30%" title="LoginActivity">
+![LoginActivity](https://user-images.githubusercontent.com/79013722/122664590-550fab80-d1dd-11eb-93b9-8caeae00fe37.jpg){: width="30%" height="30%")
 ![RegisterActivity]<img src = "https://user-images.githubusercontent.com/79013722/122664603-66f14e80-d1dd-11eb-8033-7aa04f70d1bb.jpg" width="30%" height="30%">
 ![UserDelete]<img src = "https://user-images.githubusercontent.com/79013722/122664609-6ce72f80-d1dd-11eb-8d6b-eeeb8996642f.jpg" width="30%" height="30%">
 ![MainActivity]<img src = "https://user-images.githubusercontent.com/79013722/122664640-8daf8500-d1dd-11eb-9c50-a7f934ef294d.jpg" width="30%" height="30%">
