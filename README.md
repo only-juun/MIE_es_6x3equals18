@@ -34,6 +34,7 @@ https://capstone.uos.ac.kr/mie/index.php/6x3%3D18_-_BIG_Private_Box
 ## 어플리케이션(android_application)
 ### 어플리케이션 화면구성
 |화면|내용|
+|--|--|
 |<img src = "https://user-images.githubusercontent.com/79013722/122664590-550fab80-d1dd-11eb-93b9-8caeae00fe37.jpg" width="20%" height="20%">|로그인 화면|
 |<img src = "https://user-images.githubusercontent.com/79013722/122664603-66f14e80-d1dd-11eb-8033-7aa04f70d1bb.jpg" width="20%" height="20%">|회원가입 화면|
 |<img src = "https://user-images.githubusercontent.com/79013722/122664609-6ce72f80-d1dd-11eb-8d6b-eeeb8996642f.jpg" width="20%" height="20%">|회원탈퇴 화면|
