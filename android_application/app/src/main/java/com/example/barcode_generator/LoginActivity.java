@@ -78,7 +78,7 @@ public class LoginActivity extends AppCompatActivity {
                                                         // Log and toast
                                                         String msg = getString(R.string.msg_token_fmt, token);
                                                         Log.d("TAG", msg);
-                                                        Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_SHORT).show();
+                                                        Toast.makeText(LoginActivity.this, "로그인이 완료되었습니다.", Toast.LENGTH_SHORT).show();
                                                         FirebaseFirestore.getInstance().collection(db).document("UserAccount").update("Token",token);
 
                                                     }

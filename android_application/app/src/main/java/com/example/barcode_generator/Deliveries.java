@@ -67,30 +67,33 @@ public class Deliveries extends AppCompatActivity {
     }
 
     private void EventChangeListener() {
-        db.collection("box").whereEqualTo("valid",true)
-            .addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable @org.jetbrains.annotations.Nullable QuerySnapshot value, @Nullable @org.jetbrains.annotations.Nullable FirebaseFirestoreException error) {
-                if (error != null){
+        Intent receiveIntent = getIntent();
+        String coll_name = receiveIntent.getStringExtra("boxname");
+        db.collection(coll_name).whereEqualTo("valid",true)
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable @org.jetbrains.annotations.Nullable QuerySnapshot value, @Nullable @org.jetbrains.annotations.Nullable FirebaseFirestoreException error) {
+                        if (error != null){
 
-                    //if (progressDialog.isShowing())
-                    //    progressDialog.dismiss();
-                    Log.e("Firestore error", error.getMessage());
-                    return;
-                }
+                            //if (progressDialog.isShowing())
+                            //    progressDialog.dismiss();
+                            Log.e("Firestore error", error.getMessage());
+                            return;
+                        }
 
-                for (DocumentChange dc : value.getDocumentChanges()){
+                        for (DocumentChange dc : value.getDocumentChanges()){
 
-                    if (dc.getType() == DocumentChange.Type.ADDED){
-                        arrayList.add(dc.getDocument().toObject(DeliveryContents.class));
+                            if (dc.getType() == DocumentChange.Type.ADDED){
+                                if(dc.getDocument().contains("Info")) {
+                                    arrayList.add(dc.getDocument().toObject(DeliveryContents.class));
+                                }
+                            }
+
+                            adapter.notifyDataSetChanged();
+                            //if (progressDialog.isShowing())
+                            //    progressDialog.dismiss();
+                        }
                     }
-
-                    adapter.notifyDataSetChanged();
-                    //if (progressDialog.isShowing())
-                    //    progressDialog.dismiss();
-                }
-            }
-        });
+                });
     }
 }
-

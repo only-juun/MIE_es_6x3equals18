@@ -4,16 +4,7 @@ public class UserAccount {
     private String idToken; //firebase Uid(고유 토큰정보)
     private String emailId;
     private String password;
-    private Long age;
     private String name;
-
-    public Long getAge() {
-        return age;
-    }
-
-    public void setAge(Long age) {
-        this.age = age;
-    }
 
     public String getName() {
         return name;

@@ -76,12 +76,9 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        btn_delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, UserDelete.class);
-                startActivity(intent);
-            }
-        });
+    }
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
     }
 }

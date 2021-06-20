@@ -79,7 +79,7 @@ class GenerateQR : AppCompatActivity() {
                 barcodeValue = value,
                 barcodeColor = ResourcesCompat.getColor(
                     getResources(),
-                    R.color.design_default_color_primary,
+                    R.color.uosblue,
                     null
                 ),
                 backgroundColor = ResourcesCompat.getColor(getResources(), R.color.white, null),

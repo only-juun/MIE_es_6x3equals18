@@ -10,7 +10,7 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="100dp"
         android:text="회원탈퇴"
         android:textColor="#000000"
         android:textSize="34sp"
@@ -22,7 +22,7 @@
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="100dp"
         android:text="*주의사항*\n\n 회원탈퇴 시 회원님의 모든 정보는 삭제됩니다.\n또한 해당 정보는 복원할 수 없습니다.\n\n회원탈퇴를 진행하시겠습니까?"
         android:textColor="#000000"
         app:layout_constraintEnd_toEndOf="parent"
@@ -34,19 +34,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="100dp"
-        android:layout_marginTop="32dp"
-        android:backgroundTint="#5E5E5E"
+        android:layout_marginBottom="250dp"
+        android:backgroundTint="#63666a"
         android:text="회원탈퇴"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/btn_no"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
         android:layout_marginEnd="100dp"
+        android:layout_marginBottom="250dp"
+        android:backgroundTint="#0077c8"
         android:text="아니오"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

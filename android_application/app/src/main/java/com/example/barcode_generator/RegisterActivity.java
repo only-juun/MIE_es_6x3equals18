@@ -28,7 +28,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     private FirebaseAuth mFirebaseAuth;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();     // cloud firestore
-    private EditText mEtEmail, mEtPwd, mEtAge, mEtName;
+    private EditText mEtEmail, mEtPwd, mEtName;
     private Button mBtnRegister;
 
     @Override
@@ -40,7 +40,6 @@ public class RegisterActivity extends AppCompatActivity {
 
         mEtEmail = findViewById(R.id.et_email);
         mEtPwd = findViewById(R.id.et_password);
-        mEtAge = findViewById(R.id.et_age);
         mEtName = findViewById(R.id.et_name);
         mBtnRegister = findViewById(R.id.btn_register);
 
@@ -49,7 +48,6 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String strEmail = mEtEmail.getText().toString();
                 String strPwd = mEtPwd.getText().toString();
-                Long longAge = Long.parseLong(mEtAge.getText().toString());
                 String name = mEtName.getText().toString();
 
                 mFirebaseAuth.createUserWithEmailAndPassword(strEmail,strPwd).addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
@@ -61,7 +59,6 @@ public class RegisterActivity extends AppCompatActivity {
                             account.setIdToken(firebaseUser.getUid());
                             account.setEmailId(firebaseUser.getEmail());
                             account.setPassword(strPwd);
-                            account.setAge(longAge);
                             account.setName(name);
 
                             db.collection(name).document("UserAccount").set(account);
