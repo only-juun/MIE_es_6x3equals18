@@ -37,14 +37,14 @@ https://capstone.uos.ac.kr/mie/index.php/6x3%3D18_-_BIG_Private_Box
 
 ## 도난(진동)감지 모듈(hardware/sensor_module)
 ### 도난 감지 모듈 구성
-<img src = "https://user-images.githubusercontent.com/79013722/122668328-6fa04f80-d1f2-11eb-8854-0a1cba691f62.png">
+<img src = "https://user-images.githubusercontent.com/79013722/122668328-6fa04f80-d1f2-11eb-8854-0a1cba691f62.png" width="50%" height="50%">
 
 ### 도난 감지 센서값 설정
-<img src = "https://user-images.githubusercontent.com/79013722/122668339-762ec700-d1f2-11eb-8a32-56d3896ba417.png">
+<img src = "https://user-images.githubusercontent.com/79013722/122668339-762ec700-d1f2-11eb-8a32-56d3896ba417.png" width="50%" height="50%">
 
 ## 바코드 스캔 모듈(db_pi)
 ### 바코드 스캔 모듈 시나리오
-<img src = "https://user-images.githubusercontent.com/79013722/122668277-3831a300-d1f2-11eb-8706-e674b262155c.png">
+<img src = "https://user-images.githubusercontent.com/79013722/122668277-3831a300-d1f2-11eb-8706-e674b262155c.png" width="50%" height="50%">
 
 ## 잠금장치 모듈(hardware/locking_module)
 
