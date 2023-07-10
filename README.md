@@ -1,12 +1,12 @@
 # 서울시립대학교 내장형시스템및실습(2021-1학기)
 <div class = "shields" style = "display: flex; "> 
-    <img src = "https://img.shields.io/github/issues/only-juun/MIE_es_6x3equals18">
-    <img src = "https://img.shields.io/github/forks/only-juun/MIE_es_6x3equals18">
-    <img src = "https://img.shields.io/github/stars/only-juun/MIE_es_6x3equals18">
+    <img src = "https://img.shields.io/github/issues/only-juun/6x3equals18">
+    <img src = "https://img.shields.io/github/forks/only-juun/6x3equals18">
+    <img src = "https://img.shields.io/github/stars/only-juun/6x3equals18">
     <img src="https://img.shields.io/static/v1?label=ESE&message=BIG-BOX" />
-    <img src="https://img.shields.io/github/languages/top/only-juun/MIE_es_6x3equals18" />
-    <img src="https://img.shields.io/github/languages/count/only-juun/MIE_es_6x3equals18" />
-    <img src="https://img.shields.io/github/last-commit/only-juun/MIE_es_6x3equals18"/>
+    <img src="https://img.shields.io/github/languages/top/only-juun/6x3equals18" />
+    <img src="https://img.shields.io/github/languages/count/only-juun/6x3equals18" />
+    <img src="https://img.shields.io/github/last-commit/only-juun/6x3equals18"/>
     <img src="https://img.shields.io/github/license/only-juun/MIE_es_6x3equals18" />
     <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fonly-juun%2F6x3equals18&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false"/>
 </div>
