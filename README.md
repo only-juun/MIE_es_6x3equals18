@@ -7,7 +7,7 @@
     <img src="https://img.shields.io/github/languages/top/only-juun/6x3equals18" />
     <img src="https://img.shields.io/github/languages/count/only-juun/6x3equals18" />
     <img src="https://img.shields.io/github/last-commit/only-juun/6x3equals18"/>
-    <img src="https://img.shields.io/github/license/only-juun/6x3equals18" />
+    <img src="https://img.shields.io/github/license/6x3equals18" />
     <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fonly-juun%2F6x3equals18&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false"/>
 </div>
 
